@@ -1,0 +1,45 @@
+#------------------------------------------------------------------------------
+# History - 2012.07.02 dark
+#------------------------------------------------------------------------------
+
+setenv PRJ_VER scure
+
+setenv PRJ_HOME		"$TOYPRJ_HOME/$PRJ_VER"
+setenv PRJ_STK		"$TOYPRJ_HOME/$PRJ_VER"/STK
+setenv PRJ_APP		"$TOYPRJ_HOME/$PRJ_VER"/APP
+setenv PRJ_ENVLIST	"$TOYPRJ_HOME/$PRJ_VER"/.cshrc.prjenv
+
+#------------------------------------------------------------------------------
+# Compile Environment
+#------------------------------------------------------------------------------
+setenv PLATFORM		`uname -s | tr -s "\-" "_"`			# OS (Linux)
+
+if ($PLATFORM == "Linux") then
+    setenv OSVER		`uname -r | sed "s/-.*//g"`		# OS Version (_2.6.32)
+	setenv SW_COMPILER	gcc								# gcc (for c)
+	setenv GNUFLAG		_GNU
+	setenv GNUOPT		'-Wall -g'
+	setenv LEX			'flex -l'
+	setenv YACC			'bison -y -d'
+	setenv SYS_LIBS		'-lrt -lpthread'
+	setenv SOPT			'-shared -Wl, -soname, $(TARGET_SO)'
+	setenv AR			'ar rv'
+else if ($PLATFORM == "SunOS") then
+	setenv OSVER		`uname -r | tr -s "\-" "_"`		# OS Version (_5.8)
+	setenv SW_COMPILER	g++								# g++ (for c++)
+	setenv GNUFLAG		_GNU
+	setenv GNUOPT		'-Wall -g'
+	setenv LEX			lex
+	setenv YACC			'yacc -v -d'
+	setenv SYS_LIBS		'-lrt -lsocket'
+	setenv SOPT			'-shared -Wl, -soname, $(TARGET_SO)'
+	setenv AR			'ar rv'
+else
+	echo	"Unknown PLATFORM --> " $PLATFORM
+endif
+
+#------------------------------------------------------------------------------
+# Compile Option 
+#------------------------------------------------------------------------------
+setenv PRJ_SITE		'SW'
+setenv PRJ_OPT		''
